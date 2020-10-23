@@ -17,7 +17,7 @@ namespace AMZTrackingService
 			ServiceBase[] ServicesToRun;
 			ServicesToRun = new ServiceBase[]
 			{
-				new Service1()
+				new ScheduledService()
 			};
 			ServiceBase.Run(ServicesToRun);
 		}

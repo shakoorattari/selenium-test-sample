@@ -11,35 +11,59 @@ using OpenQA.Selenium.Remote;
 using OpenQA.Selenium.Support.UI;
 using SeleniumExtras.WaitHelpers;
 using Entity;
+using NLog;
 
 namespace Selenium.Tests
 {
     [TestClass]
     public class AmazonTest
     {
+        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
         IWebDriver driver;
-
+        string applicationPath = System.Configuration.ConfigurationManager.AppSettings["ApplicationPath"];
         public AmazonTest()
         {
-            
+
         }
 
         [SetUp]
         public void startBrowser()
         {
-            var options = new ChromeOptions();
-            options.AddExtensions(@"F:\Personal\Amazon\selenium-test-sample-master\drivers\cmjihoeplpkmlmbbiiognkceoechmand.crx");
-            options.AddArgument("no-sandbox");
-            driver = new ChromeDriver(@"F:\Personal\Amazon\selenium-test-sample-master\drivers", options, TimeSpan.FromSeconds(130));
+            try
+            {
+                var options = new ChromeOptions();
+                options.AddExtensions($@"{applicationPath}\drivers\cmjihoeplpkmlmbbiiognkceoechmand.crx");
+                options.AddArgument("no-sandbox");
+                driver = new ChromeDriver($@"{applicationPath}\drivers", options, TimeSpan.FromSeconds(130));
+                _logger.Info("WebDriver Setup conpleted successfully.");
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex);
+                throw;
+            }
         }
 
         [Test]
         public CSObject test(string ASIN)
         {
-            return runAutomation(ASIN);
+            _logger.Info($"Running test for ASIN {ASIN}");
+            try
+            {
+                var rtn = runAutomation(ASIN);
+                _logger.Info("Test completed successfully.");
+                return rtn;
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex);
+                throw;
+            }
+
         }
 
-        private CSObject runAutomation(string ASIN) {
+        private CSObject runAutomation(string ASIN)
+        {
             startBrowser();
             CSObject _objCSObject = new CSObject();
             driver.Url = "https://www.amazon.ae/dp/" + ASIN;
@@ -111,7 +135,7 @@ namespace Selenium.Tests
                         {
                             string colVal = "";
                             colVal = columns[4].Text.Replace("\r\n", "_");
-                            string[] retVal = colVal.Split('_');                            
+                            string[] retVal = colVal.Split('_');
                             if (retVal.Length > 0)
                             {
                                 _sellerObject.Rating = retVal[0];
@@ -132,7 +156,7 @@ namespace Selenium.Tests
             return _objCSObject;
         }
 
-       
+
 
         [TearDown]
         public void closeBrowser()

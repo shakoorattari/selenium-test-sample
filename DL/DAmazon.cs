@@ -6,11 +6,13 @@ using System.Data.SqlClient;
 using System.Data;
 using System.ComponentModel;
 using System.Data.SqlTypes;
+using NLog;
 
 namespace DL
 {
     public class DAmazon
     {
+        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
         string conStr = ConfigurationManager.ConnectionStrings["AmazonStockTracking"].ConnectionString;
         public List<MainASINs> getEnabledASINs(int groupId)
         {
@@ -41,6 +43,7 @@ namespace DL
                 }
                 catch (Exception ex)
                 {
+                    _logger.Error(ex);
                 }
                 finally
                 {

@@ -1,6 +1,6 @@
 ﻿namespace AMZTrackingService
 {
-	partial class Service1
+	partial class ScheduledService
 	{
 		/// <summary> 
 		/// Required designer variable.
