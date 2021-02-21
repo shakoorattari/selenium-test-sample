@@ -17,7 +17,12 @@ namespace Web.Controllers
         string currentASIN = "";
         public ActionResult Index()
         {
-            string asin = "B07Z93JQS6";
+            return View();
+        }
+
+        public ActionResult RunTracker(string asin)
+        {
+            asin = "B07Z93JQS6";
             AmazonTest tst = new AmazonTest();
             //CSObject obj = tst.test("B07MWLD3VX");
             //List <MainASINs> lstmainASINs = dAmazon.getEnabledASINs();
@@ -42,7 +47,7 @@ namespace Web.Controllers
             }
 
 
-            return View();
+            return RedirectToAction("Index");
         }
 
         public ActionResult About()

@@ -12,6 +12,7 @@ using OpenQA.Selenium.Support.UI;
 using SeleniumExtras.WaitHelpers;
 using Entity;
 using NLog;
+using Assert = NUnit.Framework.Assert;
 
 namespace Selenium.Tests
 {
@@ -45,6 +46,26 @@ namespace Selenium.Tests
         }
 
         [Test]
+        public void SampleTest()
+        {
+            string ASIN = "B07Z93JQS6";
+            _logger.Info($"Running test for ASIN {ASIN}");
+            try
+            {
+                var rtn = runAutomation(ASIN);
+                _logger.Info("Test completed successfully.");
+                Assert.IsTrue(true);
+
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex);
+                throw;
+            }
+
+        }
+
+        [Test]
         public CSObject test(string ASIN)
         {
             _logger.Info($"Running test for ASIN {ASIN}");
@@ -64,7 +85,8 @@ namespace Selenium.Tests
 
         private CSObject runAutomation(string ASIN)
         {
-            startBrowser();
+            if (driver == null)
+                startBrowser();
             CSObject _objCSObject = new CSObject();
             driver.Url = "https://www.amazon.ae/dp/" + ASIN;
             if (IsElementPresent(By.Id("scxt-stock-btn")))
@@ -161,7 +183,8 @@ namespace Selenium.Tests
         [TearDown]
         public void closeBrowser()
         {
-            driver.Close();
+            if (driver != null)
+                driver.Quit();
         }
 
         private void SleepRecusrive()
