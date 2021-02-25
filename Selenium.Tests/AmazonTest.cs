@@ -48,7 +48,7 @@ namespace Selenium.Tests
         [Test]
         public void SampleTest()
         {
-            string ASIN = "B07Z93JQS6";
+            string ASIN = "B07C4H9Z3H";
             _logger.Info($"Running test for ASIN {ASIN}");
             try
             {
@@ -184,7 +184,11 @@ namespace Selenium.Tests
         public void closeBrowser()
         {
             if (driver != null)
+            {
+                driver.Close();
                 driver.Quit();
+                driver = null;
+            }
         }
 
         private void SleepRecusrive()

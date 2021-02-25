@@ -84,6 +84,7 @@ namespace DL
                 }
                 catch (Exception ex)
                 {
+                    _logger.Error(ex);
                 }
                 finally
                 {
@@ -122,6 +123,7 @@ namespace DL
                 }
                 catch (Exception ex)
                 {
+                    _logger.Error(ex);
                     return false;
                 }
                 finally
@@ -170,6 +172,7 @@ namespace DL
                 }
                 catch (Exception ex)
                 {
+                    _logger.Error(ex);
                     return false;
                 }
                 finally
